@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: proyecto_cartera_postgres
+    environment:
+      POSTGRES_DB: proyecto_cartera
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - proyecto_cartera_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: proyecto_cartera_backend
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/proyecto_cartera
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - proyecto_cartera_network
+    command: npm run dev
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: proyecto_cartera_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - proyecto_cartera_network
+    command: npm start
+
+volumes:
+  postgres_data:
+
+networks:
+  proyecto_cartera_network:
+    driver: bridge
