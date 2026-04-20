@@ -78,6 +78,8 @@ Se implementó un dashboard ejecutivo que proporciona una visión general del si
 - **Reportes**: Falta generación automática de informes Excel/Word
 - **Seguridad**: Autenticación y autorización básicas pendientes
 
+crear usuarios y demas para las personas de la empresa 
+
 El MVP cumple con los criterios mínimos de funcionalidad, permitiendo operaciones CRUD esenciales y flujo básico de procesos.
 
 ## 6. Lecciones Aprendidas
