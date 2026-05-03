@@ -160,3 +160,11 @@ INSERT INTO roi_plantillas (nombre, tipo, descripcion, puntos_requeridos) VALUES
 ('ROI Básico', 'BASICO', 'Plantilla básica para identificación de agentes especiales', 5),
 ('ROI Empresas Energía', 'EMPRESAS_ENERGIA', 'Plantilla específica para empresas del sector energético', 8)
 ON CONFLICT (nombre) DO NOTHING;
+
+-- Insert sample ROI solicitudes
+INSERT INTO roi_solicitudes (numero_roi, municipio_id, sujeto_pasivo_id, roi_plantilla_id, estado, fecha_envio, es_agente_especial) VALUES
+('ROI-2024-001', 1, 1, 1, 'ENVIADO', '2024-01-15', true),
+('ROI-2024-002', 2, 2, 2, 'BORRADOR', null, false),
+('ROI-2024-003', 1, 2, 1, 'ENVIADO', '2024-02-20', true),
+('ROI-2024-004', 2, 1, 2, 'RESPONDIDO', '2024-03-10', false)
+ON CONFLICT (numero_roi) DO NOTHING;

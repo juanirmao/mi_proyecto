@@ -1,0 +1,510 @@
+{
+  "info": {
+    "name": "Proyecto Cartera API Tests",
+    "description": "Suite de pruebas para API REST del Proyecto Cartera",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Municipios",
+      "item": [
+        {
+          "name": "GET All Municipios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/municipios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "municipios"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response should be array', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Each municipio should have required fields', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    jsonData.forEach(municipio => {",
+                  "        pm.expect(municipio).to.have.property('id');",
+                  "        pm.expect(municipio).to.have.property('nombre');",
+                  "        pm.expect(municipio).to.have.property('codigo');",
+                  "        pm.expect(municipio).to.have.property('departamento');",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Create Municipio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Test Municipio\",\n  \"codigo\": \"TEST001\",\n  \"departamento\": \"Test Departamento\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/municipios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "municipios"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response has created municipio data', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData.nombre).to.eql('Test Municipio');",
+                  "    pm.expect(jsonData.codigo).to.eql('TEST001');",
+                  "});",
+                  "",
+                  "// Store ID for subsequent tests",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('testMunicipioId', jsonData.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Update Municipio",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Updated Test Municipio\",\n  \"codigo\": \"TEST001\",\n  \"departamento\": \"Updated Departamento\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/municipios/{{testMunicipioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "municipios", "{{testMunicipioId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Municipio was updated', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.nombre).to.eql('Updated Test Municipio');",
+                  "    pm.expect(jsonData.departamento).to.eql('Updated Departamento');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Municipio",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/municipios/{{testMunicipioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "municipios", "{{testMunicipioId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains success message', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sujetos Pasivos",
+      "item": [
+        {
+          "name": "GET All Sujetos Pasivos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sujetos-pasivos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "sujetos-pasivos"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response should be array', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Each sujeto should have required fields', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    jsonData.forEach(sujeto => {",
+                  "        pm.expect(sujeto).to.have.property('id');",
+                  "        pm.expect(sujeto).to.have.property('nombre');",
+                  "        pm.expect(sujeto).to.have.property('tipo');",
+                  "        pm.expect(sujeto).to.have.property('nit');",
+                  "        pm.expect(sujeto).to.have.property('es_agente_especial');",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Create Sujeto Pasivo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Test Sujeto Pasivo\",\n  \"tipo\": \"Comercializadora\",\n  \"nit\": \"123456789\",\n  \"municipio_id\": \"1\",\n  \"es_agente_especial\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/sujetos-pasivos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "sujetos-pasivos"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response has created sujeto data', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData.nombre).to.eql('Test Sujeto Pasivo');",
+                  "    pm.expect(jsonData.es_agente_especial).to.be.true;",
+                  "});",
+                  "",
+                  "// Store ID for subsequent tests",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('testSujetoId', jsonData.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Update Sujeto Pasivo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Updated Test Sujeto\",\n  \"tipo\": \"Generadora\",\n  \"nit\": \"123456789\",\n  \"municipio_id\": \"1\",\n  \"es_agente_especial\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/sujetos-pasivos/{{testSujetoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "sujetos-pasivos", "{{testSujetoId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Sujeto was updated', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.nombre).to.eql('Updated Test Sujeto');",
+                  "    pm.expect(jsonData.es_agente_especial).to.be.false;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ROI Solicitudes",
+      "item": [
+        {
+          "name": "GET All ROI Solicitudes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/roi-solicitudes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "roi-solicitudes"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response should be array', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Each solicitud should have required fields', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    jsonData.forEach(solicitud => {",
+                  "        pm.expect(solicitud).to.have.property('id');",
+                  "        pm.expect(solicitud).to.have.property('numero_roi');",
+                  "        pm.expect(solicitud).to.have.property('estado');",
+                  "        pm.expect(solicitud).to.have.property('es_agente_especial');",
+                  "        pm.expect(solicitud).to.have.property('fecha_envio');",
+                  "        pm.expect(solicitud).to.have.property('fecha_respuesta');",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Create ROI Solicitud",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_roi\": \"TEST-ROI-001\",\n  \"municipio_id\": \"1\",\n  \"sujeto_pasivo_id\": \"1\",\n  \"roi_plantilla_id\": \"1\",\n  \"estado\": \"BORRADOR\",\n  \"es_agente_especial\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/roi-solicitudes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "roi-solicitudes"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response has created solicitud data', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData.numero_roi).to.eql('TEST-ROI-001');",
+                  "    pm.expect(jsonData.estado).to.eql('BORRADOR');",
+                  "    pm.expect(jsonData.es_agente_especial).to.be.true;",
+                  "});",
+                  "",
+                  "// Store ID for subsequent tests",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('testRoiId', jsonData.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Update ROI Solicitud to ENVIADO",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_roi\": \"TEST-ROI-001\",\n  \"municipio_id\": \"1\",\n  \"sujeto_pasivo_id\": \"1\",\n  \"roi_plantilla_id\": \"1\",\n  \"estado\": \"ENVIADO\",\n  \"fecha_envio\": \"2024-05-01\",\n  \"es_agente_especial\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/roi-solicitudes/{{testRoiId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "roi-solicitudes", "{{testRoiId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Solicitud was updated to ENVIADO', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.estado).to.eql('ENVIADO');",
+                  "    pm.expect(jsonData.fecha_envio).to.eql('2024-05-01');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Update ROI Solicitud to RESPONDIDO",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_roi\": \"TEST-ROI-001\",\n  \"municipio_id\": \"1\",\n  \"sujeto_pasivo_id\": \"1\",\n  \"roi_plantilla_id\": \"1\",\n  \"estado\": \"RESPONDIDO\",\n  \"fecha_respuesta\": \"2024-05-01\",\n  \"es_agente_especial\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/roi-solicitudes/{{testRoiId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "roi-solicitudes", "{{testRoiId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Solicitud was updated to RESPONDIDO', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.estado).to.eql('RESPONDIDO');",
+                  "    pm.expect(jsonData.fecha_respuesta).to.eql('2024-05-01');",
+                  "    pm.expect(jsonData.es_agente_especial).to.be.false;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global pre-request script",
+          "console.log('Running tests for Proyecto Cartera API');"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test script",
+          "pm.test('Response time is less than 2000ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+          "});"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    }
+  ]
+}
